@@ -1,0 +1,24 @@
+resources:
+  jobs:
+    ingestion_job:
+      name: multi_workspace_ingestion
+
+      # Job-level parameters
+      parameters:
+        - name: isHuman
+          default: True
+
+      tasks:
+        - task_key: ingestion
+
+          notebook_task:
+            notebook_path: ../../src/notebooks/ingestion.ipynb
+            source: WORKSPACE
+
+            # Notebook-level parameters
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${var.schema}
+
+      queue:
+        enabled: true

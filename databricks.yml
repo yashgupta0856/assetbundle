@@ -1,0 +1,58 @@
+bundle:
+  name: multi_workspace
+  uuid: f47dc916-6619-4625-be88-0c077694f7f8
+
+include:
+  - resources/*.yml
+  - resources/*/*.yml
+
+variables:
+  catalog:
+    description: The catalog to use
+    default: default_catalog
+
+  schema:
+    description: The schema to use
+    default: default_schema
+
+  isHuman:
+    description: testing for job parameters
+    default: false
+
+targets:
+  dev_personal:
+    mode: development
+    default: true
+
+
+    presets:
+      name_prefix: yashakakiller___
+      source_linked_deployment: false
+
+    workspace:
+      host: https://dbc-106d54b5-8ecc.cloud.databricks.com
+
+    variables:
+      catalog: sandbox
+      schema: dev
+
+    permissions:
+      - user_name: yashakakiller@gmail.com
+        level: CAN_MANAGE
+      - group_name: users
+        level: CAN_MANAGE
+
+  prod_personal:
+    mode: production
+
+    workspace:
+      host: https://adb-7405616722234047.7.azuredatabricks.net
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+
+    variables:
+      catalog: production
+      schema: prod
+
+    permissions:
+      - user_name: abhijeet.24bcan0589@jecrcu.edu.in
+        level: CAN_MANAGE

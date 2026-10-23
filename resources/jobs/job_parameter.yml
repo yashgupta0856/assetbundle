@@ -1,0 +1,41 @@
+resources:
+  jobs:
+    job_parameter_demo:
+      name: job_parameter_demo
+      tasks:
+        - task_key: job_parameter_usecase
+          condition_task:
+            op: EQUAL_TO
+            left: "{{job.parameters.isHuman}}"
+            right: "true"
+        - task_key: success_notebook
+          depends_on:
+            - task_key: job_parameter_usecase
+              outcome: "true"
+          notebook_task:
+            notebook_path: ../../src/notebooks/ingestion.ipynb
+            base_parameters:
+              catalog: ${var.catalog}
+              schema: ${var.schema}
+
+            source: WORKSPACE
+          environment_key: Default
+        - task_key: failure_notebook
+          depends_on:
+            - task_key: job_parameter_usecase
+              outcome: "false"
+          notebook_task:
+            notebook_path: ../../src/notebooks/failure.ipynb
+            source: WORKSPACE
+            
+          environment_key: Default
+      queue:
+        enabled: true
+      parameters:
+        - name: isHuman
+          default: ${var.isHuman}
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "6"
+      performance_target: PERFORMANCE_OPTIMIZED
