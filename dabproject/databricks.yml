@@ -1,0 +1,48 @@
+# This is a Declarative Automation Bundle definition for dabproject.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: dabproject
+  uuid: 899812c6-c965-43e9-8948-65311b6c3563
+
+include:
+  - resources/*.yml
+  - resources/*/*.yml
+
+
+# variables:
+#   catalog_name: 
+#     description: the catalog to use
+#     default: system
+
+#   schema_nmae:
+#     description: the schema to use
+#     default: information_schema
+
+targets:
+  dev:
+    # The default target uses 'mode: development' to create a development copy.
+    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Any job schedules and triggers are paused by default.
+    # See also https://docs.databricks.com/dev-tools/bundles/deployment-modes.html.
+    mode: development
+    default: true
+    presets:
+      name_prefix: yashakakiller_
+      tags: 
+        environment: development
+        isHuman: True
+      source_linked_deployment: false
+    workspace:
+      host: dbc-106d54b5-8ecc.cloud.databricks.com
+  prod:
+    mode: production
+    workspace:
+      host: dbc-106d54b5-8ecc.cloud.databricks.com
+      # We explicitly deploy to /Workspace/Users/yashakakiller@gmail.com to make sure we only have a single copy.
+      root_path: /Workspace/Users/yashakakiller@gmail.com/PROD/.bundle/${bundle.name}/${bundle.target}
+    # variables:
+    #   catalog_name: lakeflow_catalog
+    #   schema_name: default
+    permissions:
+      - user_name: yashakakiller@gmail.com
+        level: CAN_MANAGE

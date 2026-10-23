@@ -1,0 +1,4 @@
+variables:
+  catalog_name:
+    description:  This is the catalog name variable
+    default:  lakeflow_catalog
