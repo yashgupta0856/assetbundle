@@ -1,7 +1,7 @@
 resources:
   jobs:
-    job_parameter_demo:
-      name: job_parameter_demo
+    job_parameter_demo_usecase:
+      name: job_parameter_demo_usecase
       tasks:
         - task_key: job_parameter_usecase
           condition_task:
